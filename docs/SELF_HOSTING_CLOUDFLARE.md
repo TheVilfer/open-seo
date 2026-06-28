@@ -68,6 +68,18 @@ Managed OAuth is required for MCP clients and is not enabled by default.
 5. Turn on `Managed OAuth`.
 6. Save.
 
+Managed OAuth alone is not enough: MCP clients register via Dynamic Client
+Registration, and a client whose redirect URI isn't allowlisted can't finish
+registering — so it logs in but exposes no tools. In **Managed OAuth settings**,
+allow the redirect URIs your clients use:
+
+- Allow `localhost` / loopback clients — for CLI and desktop agents (Codex CLI,
+  Claude Code) that register `http://localhost:PORT/callback`.
+- Add HTTPS redirect URIs for web connectors (a path may end in `/*`).
+
+See Cloudflare's [Managed OAuth](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/managed-oauth/)
+docs for the exact dashboard steps.
+
 MCP clients should connect to:
 
 ```text
