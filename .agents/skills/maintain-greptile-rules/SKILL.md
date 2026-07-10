@@ -42,7 +42,7 @@ If the evidence or policy is ambiguous, leave the configuration and enforcement 
 - Do not infer permanent policy merely because the current repository has zero examples of an alternative.
 - Prefer narrowing or replacing a noisy rule over layering on more prose.
 - Keep repository-specific rules in `.greptile/`. Verify and report whether a minimal **org-enforced** dashboard baseline protects external contributions, secrets, authentication, billing, CI, and attempts to weaken review controls. Do not create or change dashboard, MCP, or organization rules unless the user explicitly asks, and do not duplicate the full repository rule set there.
-- Treat changes to `.greptile/**`, `AGENTS.md`, `.agents/skills/**`, and `.github/**` as review-control changes that must receive explicit maintainer review. CODEOWNERS requests that review; branch protection or a ruleset must separately require code-owner approval when available.
+- Treat changes to `.greptile/**`, `AGENTS.md`, `CLAUDE.md`, `.agents/skills/**`, and `.github/**` as review-control changes that must receive explicit maintainer review. CODEOWNERS requests that review; branch protection or a ruleset must separately require code-owner approval when available.
 - Update the smallest set of configuration files needed; do not duplicate rule bodies in separate documentation.
 
 ## 5. Validate

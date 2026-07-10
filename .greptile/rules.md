@@ -6,7 +6,7 @@ OpenSEO receives external contributions, including untested coding-agent output.
 
 - Prioritize concrete correctness, security, authorization, billing, data-loss, portability, and user-facing regressions.
 - Scrutinize new dependencies and install scripts, CI permissions, external destinations, secret reads, authentication scopes, webhook and OAuth changes, billing bypasses, disabled tests, encoded or dynamic execution, and broad unrelated rewrites.
-- Treat changes to `.greptile/**`, `AGENTS.md`, `.agents/skills/**`, and `.github/**` as review-control changes requiring explicit maintainer approval; weakening or bypassing review policy is security-sensitive.
+- Treat changes to `.greptile/**`, `AGENTS.md`, `CLAUDE.md`, `.agents/skills/**`, and `.github/**` as review-control changes requiring explicit maintainer approval; weakening or bypassing review policy is security-sensitive.
 - Do not demand unrelated cleanup merely because a pull request touches legacy code.
 - Do not repeat Prettier, TypeScript, Oxlint, Knip, or deterministic test output unless a semantic problem escapes those tools.
 - Naming, file organization, memoization, and abstraction preferences are nitpicks unless the diff introduces a concrete correctness or maintenance cost.
