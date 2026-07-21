@@ -16,6 +16,7 @@ import type { AuditConfig } from "@/server/lib/audit/types";
 import { captureServerError, captureServerEvent } from "@/server/lib/posthog";
 import { runAuditPhases } from "@/server/workflows/siteAuditWorkflowPhases";
 import { pgStep } from "@/server/workflows/pgStep";
+import { emitAnalyticsWebhook } from "@/server/analytics-webhooks";
 
 interface AuditParams {
   auditId: string;
@@ -67,6 +68,18 @@ export class SiteAuditWorkflow extends WorkflowEntrypoint<Env, AuditParams> {
         startUrl,
         config,
       });
+      await step.do(
+        "notify-analytics",
+        { retries: { limit: 3, delay: "5 seconds" } },
+        () =>
+          emitAnalyticsWebhook(this.env, {
+            projectId,
+            type: "audit.completed",
+            entityType: "audit",
+            entityId: auditId,
+            data: { auditId, startUrl },
+          }),
+      );
     } catch (error) {
       console.error(`Audit ${auditId} failed:`, error);
       // Workflow entrypoints run outside the server-function middleware, so

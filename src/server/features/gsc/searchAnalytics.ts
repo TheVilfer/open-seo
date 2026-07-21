@@ -61,7 +61,7 @@ export type GscPerformanceInput = {
   rowLimit?: number;
   startRow?: number;
   type?: GscSearchType;
-  dataState?: "all" | "final";
+  dataState?: "hourly_all" | "all" | "final";
 };
 
 function clamp(value: number, min: number, max: number): number {

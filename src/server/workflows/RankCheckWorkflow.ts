@@ -24,6 +24,7 @@ import {
 } from "@/shared/billing";
 import { estimateRankCheckCredits } from "@/shared/rank-tracking";
 import { isHostedServerAuthMode } from "@/server/lib/runtime-env";
+import { emitAnalyticsWebhook } from "@/server/analytics-webhooks";
 
 const SINGLE_ATTEMPT_STEP_CONFIG = {
   retries: { limit: 0, delay: "1 second" as const },
@@ -361,6 +362,19 @@ export class RankCheckWorkflow extends WorkflowEntrypoint<
           batchError,
           queueStats,
         }),
+      );
+      await step.do(
+        "notify-analytics",
+        { retries: { limit: 3, delay: "5 seconds" } },
+        () =>
+          emitAnalyticsWebhook(this.env, {
+            projectId,
+            type: "rank_snapshot.completed",
+            entityType: "rank_tracker",
+            entityId: configId,
+            dataState: batchError ? "fresh_partial" : "final",
+            data: { runId, configId, trigger, batchError },
+          }),
       );
     } catch (error) {
       console.error(`Rank check ${runId} failed:`, error);

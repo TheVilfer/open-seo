@@ -23,6 +23,7 @@ import {
   handleAutumnWebhookRequest,
 } from "@/server/billing/autumn-webhook";
 import { maybeSendSelfHostHeartbeat } from "@/server/lib/self-host-telemetry";
+import { handleAnalyticsApiRequest } from "@/server/analytics-api";
 
 const appFetch = createStartHandler(defaultStreamHandler);
 const openSeoOAuthProvider = createOpenSeoOAuthProvider(appFetch);
@@ -146,6 +147,13 @@ function handleFetch(
 
   if (pathname.startsWith("/agents/")) {
     return routeChatAgents(publicRequest, env);
+  }
+
+  // Read-only, VisaGyan-project-scoped analytics surface. Cloudflare Access
+  // remains the outer service-token gate; the bearer token is a second,
+  // application-level credential. No paid DataForSEO operation is reachable.
+  if (pathname.startsWith("/api/v1/projects/")) {
+    return handleAnalyticsApiRequest(publicRequest, env);
   }
 
   if (isHostedAuthMode(authMode)) {
